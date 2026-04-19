@@ -1,0 +1,22 @@
+-- Animated name effects
+--
+-- The profiles.username_color column already exists (added in schema.sql:738).
+-- That same column stores the new animated effect ids — no migration needed.
+-- This file documents the new accepted values so admins know what to expect.
+--
+-- Accepted values:
+--   'default' 'gold' 'red' 'cyan' 'green' 'pink'   -- legacy solid colors (unchanged)
+--   'rainbow' 'neon' 'fire' 'ice'                  -- animated effects (added client-side)
+--
+-- Column definition (already applied):
+--   ALTER TABLE profiles ADD COLUMN IF NOT EXISTS username_color text DEFAULT 'default';
+--   ALTER TABLE profiles ADD COLUMN IF NOT EXISTS username_color_expires_at timestamptz;
+--
+-- If you want to enforce the set at the DB level, add a CHECK constraint:
+-- ALTER TABLE profiles
+--   DROP CONSTRAINT IF EXISTS profiles_username_color_valid;
+-- ALTER TABLE profiles
+--   ADD CONSTRAINT profiles_username_color_valid
+--   CHECK (username_color IN (
+--     'default','gold','red','cyan','green','pink','rainbow','neon','fire','ice'
+--   ));
